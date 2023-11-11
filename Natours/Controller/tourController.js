@@ -2,7 +2,19 @@ const Tour = require('../Models/tourModel');
 
 exports.getTours = async (req, res) => {
   try {
-    const tours = await Tour.find();
+    // const tours = await Tour.find({ duration: 5, difficulty: 'easy' });
+    // const tours = await Tour.find()
+    //   .where('duration')
+    //   .equals(5)
+    //   .where('difficulty')
+    //   .equals('easy');
+    const queryObject = { ...req.query };
+    const excludedFields = ['sort', 'limit', 'fields', 'page'];
+    excludedFields.forEach((el) => delete queryObject[el]); //to delete from queryObject
+    console.log(req.query, queryObject);
+
+    const query = Tour.find(queryObject);
+    const tours = await query;
     console.log(req.params);
     const id = req.params.id * 1; //times is uesd to convert id to number
     res.status(200).json({
