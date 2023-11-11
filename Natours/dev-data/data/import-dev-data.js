@@ -21,10 +21,31 @@ mongoose
     console.log(con.connections);
     console.log('DB connection successfully');
   });
-const tours = JSON.parse(fs.readFileSync('tours-simple.json', 'utf-8'));
+const tours = JSON.parse(
+  fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8')
+);
 const ImportData = async () => {
   try {
     await Tour.create(tours);
     console.log('Data Sucessfully loaded');
-  } catch (err) {}
+  } catch (err) {
+    console.log(err);
+  }
+  process.exit();
 };
+//delete data from DB
+const deleteD = async () => {
+  try {
+    await Tour.deleteMany();
+    console.log('Data Sucessfully Deleted');
+  } catch (err) {
+    console.log(err);
+  }
+  process.exit();
+};
+if (process.argv[2] === '--import') {
+  ImportData();
+} else if (process.argv[2] === '--delete') {
+  deleteD();
+}
+console.log(process.argv);
