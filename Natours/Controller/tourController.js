@@ -25,6 +25,12 @@ exports.getTours = async (req, res) => {
     } else {
       query = query.sort(-'createdAt');
     }
+    if (req.query.fields) {
+      const fields = req.query.fields.split(',').join('');
+      query = query.select(fields);
+    } else {
+      query = query.select('-__v');
+    }
     const tours = await query;
     console.log(req.params);
     const id = req.params.id * 1; //times is uesd to convert id to number
