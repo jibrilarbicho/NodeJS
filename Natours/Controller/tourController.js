@@ -10,10 +10,13 @@ exports.getTours = async (req, res) => {
     //   .equals('easy');
     const queryObject = { ...req.query };
     const excludedFields = ['sort', 'limit', 'fields', 'page'];
-    excludedFields.forEach((el) => delete queryObject[el]); //to delete from queryObject
-    console.log(req.query, queryObject);
+    excludedFields.forEach((el) => delete queryObject[el]); //to delete from
+    let queryStr = JSON.stringify(queryObject);
+    console.log('Original:', queryStr);
+    queryStr = queryStr.replace(/(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+    console.log(JSON.parse(queryStr));
 
-    const query = Tour.find(queryObject);
+    const query = Tour.find(JSON.parse(queryStr));
     const tours = await query;
     console.log(req.params);
     const id = req.params.id * 1; //times is uesd to convert id to number
