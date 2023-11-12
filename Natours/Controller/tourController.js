@@ -16,7 +16,15 @@ exports.getTours = async (req, res) => {
     queryStr = queryStr.replace(/(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
     console.log(JSON.parse(queryStr));
 
-    const query = Tour.find(JSON.parse(queryStr));
+    let query = Tour.find(JSON.parse(queryStr));
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(',').join('');
+      query = query.sort(sortBy);
+
+      // query = query.sort(req.query.sort);
+    } else {
+      query = query.sort(-'createdAt');
+    }
     const tours = await query;
     console.log(req.params);
     const id = req.params.id * 1; //times is uesd to convert id to number
