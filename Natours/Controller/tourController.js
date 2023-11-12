@@ -1,5 +1,10 @@
 const Tour = require('../Models/tourModel');
-
+exports.aliastoptours = (req, res, next) => {
+  req.query.limit = '5';
+  req.query.sort = '-ratingsAverage ,price';
+  req.query.fields = 'name,price,ratingsAverage,summary,difficulty';
+  next();
+};
 exports.getTours = async (req, res) => {
   try {
     // const tours = await Tour.find({ duration: 5, difficulty: 'easy' });
@@ -52,7 +57,7 @@ exports.getTours = async (req, res) => {
   } catch (err) {
     res.status(404).json({
       status: 'fail',
-      message: err,
+      message: err.message,
     });
   }
 };
