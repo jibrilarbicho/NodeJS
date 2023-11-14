@@ -4,7 +4,7 @@ const tourSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'A tour must have a name'],
-    unique: true,
+    unique: false,
   },
   duration: {
     type: Number,
@@ -51,7 +51,7 @@ const tourSchema = new mongoose.Schema({
     default: Date.now(),
     select: false,
   },
-  startdates: [Date],
+  startDates: [Date],
 });
 const Tour = mongoose.model('Tour', tourSchema);
 module.exports = Tour;
