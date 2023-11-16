@@ -52,7 +52,7 @@ exports.getTours = async (req, res) => {
       .limiting()
       .pagination();
     const tours = await features.query;
-    console.log(req.params);
+    // console.log(req.params);
     const id = req.params.id * 1; //times is uesd to convert id to number
     res.status(200).json({
       status: 'sucess',
@@ -71,7 +71,7 @@ exports.getTours = async (req, res) => {
 exports.getTour = async (req, res) => {
   try {
     const tour = await Tour.findById(req.params.id);
-    console.log(req.params);
+    // console.log(req.params);
     const id = req.params.id * 1; //times is uesd to convert id to number
     res.status(200).json({
       status: 'sucess',
@@ -165,7 +165,7 @@ exports.updateTour = async (req, res) => {
       },
     });
   } catch (err) {
-    console.error(err);
+    // console.error(err);
 
     res.status(400).json({
       status: 'fail',
