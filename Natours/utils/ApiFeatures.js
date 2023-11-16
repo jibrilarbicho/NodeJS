@@ -15,17 +15,27 @@ class APIFeatures {
     this.query.find(JSON.parse(queryStr));
     return this;
   }
+  // sort() {
+  //   if (this.queryStr.sort) {
+  //     const sortBy = this.queryStr.sort.split(',').join('');
+  //     this.query = this.query.sort(sortBy);
+
+  //     // query = query.sort(req.query.sort);
+  //   } else {
+  //     this.query = this.query.sort(-'createdAt');
+  //   }
+  //   return this;
+  // }
   sort() {
     if (this.queryStr.sort) {
-      const sortBy = this.queryStr.sort.split(',').join('');
-      this.query = this.query.sort(sortBy);
-
-      // query = query.sort(req.query.sort);
+      const sortBy = this.queryStr.sort.split(',').join(' '); // Corrected construction
+      this.query = this.query.sort(sortBy); // Applying corrected sorting
     } else {
-      this.query = this.query.sort(-'createdAt');
+      this.query = this.query.sort({ createdAt: -1 }); // Corrected usage of sort
     }
     return this;
   }
+
   limiting() {
     if (this.queryStr.fields) {
       const fields = this.queryStr.fields.split(',').join('');
