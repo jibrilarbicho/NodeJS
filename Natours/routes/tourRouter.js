@@ -13,12 +13,15 @@ tourRouter
   .get(tourController.getTour)
   .post(tourController.createTours)
   .patch(tourController.updateTour)
-  .delete(tourController.deleteTour);
-
+  .delete(
+    authoController.protect,
+    authoController.restrictTo('admin', 'lead-guide'),
+    tourController.deleteTour
+  );
 tourRouter
   .route('/')
   .get(authoController.protect, tourController.getTours)
   .post(tourController.createTours)
-  .patch(tourController.updateTour)
-  .delete(tourController.deleteTour);
+  .patch(tourController.updateTour);
+
 module.exports = tourRouter;
