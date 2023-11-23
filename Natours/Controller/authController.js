@@ -12,17 +12,19 @@ const signToken = (id) => {
     expiresIn: 7776000,
   });
 };
-exports.signup = catchAsync(async (req, res, next) => {
-  const newUser = await User.create(req.body);
-  const token = signToken(newUser._id);
-
-  res.status(201).json({
+const createSendToken = (user, statusCode, res) => {
+  const token = signToken(user._id);
+  res.status(statusCode).json({
     status: 'success',
     token,
     data: {
-      user: newUser,
+      user,
     },
   });
+};
+exports.signup = catchAsync(async (req, res, next) => {
+  const newUser = await User.create(req.body);
+  createSendToken(newUser, 201, res);
 });
 exports.login = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
@@ -33,19 +35,12 @@ exports.login = catchAsync(async (req, res, next) => {
   // 2) Check if user exists && password is correct
   // 3) If everything ok, send token to client
   const user = await User.findOne({ email }).select('+password');
-  const token = signToken(user._id);
 
   const correct = await user.correctPassword(password, user.password);
   if (!user || !correct) {
     return next(new AppError('Incorrect email or password', 401));
   }
-  res.status(200).json({
-    status: 'success',
-    token,
-    user: {
-      user,
-    },
-  });
+  createSendToken(user, 200, res);
 });
 exports.protect = catchAsync(async (req, res, next) => {
   let token;
@@ -141,12 +136,20 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   user.passwordResetToken = undefined;
   user.passwordResetExpires = undefined;
   await user.save();
-  const token = signToken(user._id);
-  res.status(200).json({
-    status: 'success',
-    token,
-    user: {
-      user,
-    },
-  });
+  createSendToken(newUser, 201, res);
+});
+exports.updatePassword = catchAsync(async (req, res, next) => {
+  // 1) Get user from collection
+  const user = await User.findById(req.user.id).select('+password');
+  // 2) Check if POSTed current password is correct
+  if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
+    return next(new AppError('Your current password is wrong.', 401));
+  }
+  // 3) If so, update password
+  user.password = req.body.password;
+  user.passwordConfirm = req.body.passwordConfirm;
+  await user.save();
+  createSendToken(user, 200, res);
+  // User.findByIdAndUpdate//the reason why i am  not used this method is the password is not hashed or the middlewares are not excuted and  the  password is not validated
+  // 4) Log user in, send JWT
 });
