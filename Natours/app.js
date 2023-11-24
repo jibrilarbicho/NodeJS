@@ -1,11 +1,13 @@
 const express = require('express');
 const app = express();
+const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const Errohndler = require('./Controller/controllerError');
 const morgan = require('morgan');
 const tourRouter = require('./routes/tourRouter');
 const userRouter = require('./routes/userRouter');
 const AppError = require('./utils/appError');
+app.use(helmet());
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
 if (process.env.NODE_ENV === 'developement') app.use(morgan('dev'));

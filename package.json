@@ -2,6 +2,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "express-rate-limit": "^7.1.4",
+    "helmet": "^7.1.0",
     "validator": "^13.11.0"
   }
 }
