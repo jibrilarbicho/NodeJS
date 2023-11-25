@@ -66,6 +66,10 @@ exports.getTours = catchAsync(async (req, res, next) => {
 });
 exports.getTour = catchAsync(async (req, res, next) => {
   const tour = await Tour.findById(req.params.id);
+  // const tour = await Tour.findById(req.params.id).populate({
+  //   path: 'guides',
+  //   select: '-__v -paswordChangedAt',
+  // });
   // console.log(req.params);
   const id = req.params.id * 1; //times is uesd to convert id to number
   if (!tour) {

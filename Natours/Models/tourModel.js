@@ -111,12 +111,19 @@ const tourSchema = new mongoose.Schema(
 //   this.guides = await Promise.all(guidesPromises);
 //   next();
 // });
+
 tourSchema.pre('save', function (next) {
   //this intrdouces the current document
   this.slugify = slugify(this.name, { lower: true });
   next();
 });
-
+tourSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'guides',
+    select: '-__v -passwordChangedAt',
+  });
+  next();
+});
 tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7; //this represents each document
 });
