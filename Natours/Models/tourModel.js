@@ -127,7 +127,12 @@ tourSchema.pre(/^find/, function (next) {
 tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7; //this represents each document
 });
-
+// Virtual populate
+tourSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'tour',
+  localField: '_id',
+});
 const Tour = mongoose.model('Tour', tourSchema);
 module.exports = Tour;
 //query middleware
