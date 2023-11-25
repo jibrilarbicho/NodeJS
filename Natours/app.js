@@ -14,7 +14,7 @@ app.use(helmet());
 if (process.env.NODE_ENV === 'developement') app.use(morgan('dev'));
 ``;
 const limiter = rateLimit({
-  max: 3,
+  max: 100,
   windowMs: 60 * 60 * 1000,
   message: 'Too many requests from this IP, please try again in an hour!',
 });
