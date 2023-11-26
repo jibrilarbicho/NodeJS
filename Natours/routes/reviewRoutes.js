@@ -1,6 +1,6 @@
 const express = require('express');
 const reviewController = require('./../Controller/reviewController');
-const reviewRoutes = express.Router();
+const reviewRoutes = express.Router({ mergeParams: true }); //to make access/TourID/reviews
 const authocontroller = require('./../Controller/authController');
 reviewRoutes
   .route('/')
