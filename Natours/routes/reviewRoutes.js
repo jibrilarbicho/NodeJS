@@ -11,7 +11,10 @@ reviewRoutes
     reviewController.setTourUserIds,
     reviewController.createReview
   );
-reviewRoutes.route('/:id').delete(reviewController.deleteReview);
-reviewRoutes.route('/:id').patch(reviewController.updateReview);
+reviewRoutes
+  .route('/:id')
+  .delete(reviewController.deleteReview)
+  .patch(reviewController.updateReview)
+  .get(reviewController.getReview);
 
 module.exports = reviewRoutes;

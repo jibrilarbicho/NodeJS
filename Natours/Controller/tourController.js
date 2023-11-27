@@ -11,96 +11,98 @@ exports.aliastoptours = (req, res, next) => {
   next();
 };
 
-exports.getTours = catchAsync(async (req, res, next) => {
-  // const tours = await Tour.find({ duration: 5, difficulty: 'easy' });
-  // const tours = await Tour.find()
-  //   .where('duration')
-  //   .equals(5)
-  //   .where('difficulty')
-  //   .equals('easy');
-  // const queryObject = { ...req.query };
-  // const excludedFields = ['sort', 'limit', 'fields', 'page'];
-  // excludedFields.forEach((el) => delete queryObject[el]); //to delete from
-  // let queryStr = JSON.stringify(queryObject);
-  // console.log('Original:', queryStr);
-  // queryStr = queryStr.replace(/(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-  // console.log(JSON.parse(queryStr));
+exports.getTours = factory.getAll(Tour);
+// exports.getTours = catchAsync(async (req, res, next) => {
+// const tours = await Tour.find({ duration: 5, difficulty: 'easy' });
+// const tours = await Tour.find()
+//   .where('duration')
+//   .equals(5)
+//   .where('difficulty')
+//   .equals('easy');
+// const queryObject = { ...req.query };
+// const excludedFields = ['sort', 'limit', 'fields', 'page'];
+// excludedFields.forEach((el) => delete queryObject[el]); //to delete from
+// let queryStr = JSON.stringify(queryObject);
+// console.log('Original:', queryStr);
+// queryStr = queryStr.replace(/(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+// console.log(JSON.parse(queryStr));
 
-  // let query = Tour.find(JSON.parse(queryStr));
-  // if (req.query.sort) {
-  //   const sortBy = req.query.sort.split(',').join('');
-  //   query = query.sort(sortBy);
+// let query = Tour.find(JSON.parse(queryStr));
+// if (req.query.sort) {
+//   const sortBy = req.query.sort.split(',').join('');
+//   query = query.sort(sortBy);
 
-  //   // query = query.sort(req.query.sort);
-  // } else {
-  //   query = query.sort(-'createdAt');
-  // }
-  // if (req.query.fields) {
-  //   const fields = req.query.fields.split(',').join('');
-  //   query = query.select(fields);
-  // } else {
-  //   query = query.select('-__v');
-  // }
-  // const page = req.query.page * 1 || 1;
-  // const limit = req.query.page * 1 || 100;
-  // const skip = (page - 1) * limit;
-  // query = query.skip(skip).limit(limit);
-  // if (req.query.page) {
-  //   const numTours = await Tour.countDocuments();
-  //   if (skip >= numTours) throw new Error('this does not exist');
-  // }
-  const features = new APIFeatures(Tour.find(), req.query)
-    .filter()
-    .sort()
-    .limiting()
-    .pagination();
-  const tours = await features.query;
-  // console.log(req.params);
-  const id = req.params.id * 1; //times is uesd to convert id to number
-  res.status(200).json({
-    status: 'sucess',
-    resluts: tours.length,
-    data: {
-      tours,
-    },
-  });
-});
-exports.getTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findById(req.params.id).populate('reviews');
-  // const tour = await Tour.findById(req.params.id).populate({
-  //   path: 'guides',
-  //   select: '-__v -paswordChangedAt',
-  // });
-  // console.log(req.params);
-  const id = req.params.id * 1; //times is uesd to convert id to number
-  if (!tour) {
-    res.status(404).json({
-      status: 'fail',
-      message: 'no tour found with this ID',
-    });
-    return;
-  }
-  res.status(200).json({
-    status: 'sucess',
-    data: {
-      tour,
-    },
-  });
+//   // query = query.sort(req.query.sort);
+// } else {
+//   query = query.sort(-'createdAt');
+// }
+// if (req.query.fields) {
+//   const fields = req.query.fields.split(',').join('');
+//   query = query.select(fields);
+// } else {
+//   query = query.select('-__v');
+// }
+// const page = req.query.page * 1 || 1;
+// const limit = req.query.page * 1 || 100;
+// const skip = (page - 1) * limit;
+// query = query.skip(skip).limit(limit);
+// if (req.query.page) {
+//   const numTours = await Tour.countDocuments();
+//   if (skip >= numTours) throw new Error('this does not exist');
+// }
+//   const features = new APIFeatures(Tour.find(), req.query)
+//     .filter()
+//     .sort()
+//     .limiting()
+//     .pagination();
+//   const tours = await features.query;
+//   // console.log(req.params);
+//   const id = req.params.id * 1; //times is uesd to convert id to number
+//   res.status(200).json({
+//     status: 'sucess',
+//     resluts: tours.length,
+//     data: {
+//       tours,
+//     },
+//   });
+// });
+exports.getTour = factory.getOne(Tour, { path: 'reviews' });
+// exports.getTour = catchAsync(async (req, res, next) => {
+//   const tour = await Tour.findById(req.params.id).populate('reviews');
+//   // const tour = await Tour.findById(req.params.id).populate({
+//   //   path: 'guides',
+//   //   select: '-__v -paswordChangedAt',
+//   // });
+//   // console.log(req.params);
+//   const id = req.params.id * 1; //times is uesd to convert id to number
+//   if (!tour) {
+//     res.status(404).json({
+//       status: 'fail',
+//       message: 'no tour found with this ID',
+//     });
+//     return;
+//   }
+//   res.status(200).json({
+//     status: 'sucess',
+//     data: {
+//       tour,
+//     },
+//   });
 
-  // if (id > tours.length) {
-  //   return res.status(404).json({
-  //     status: 'fail',
-  //     message: 'invalid ID',
-  //   });
-  // }
-  // const tour = tours.find((el) => el.id === id);
-  // res.status(200).json({
-  //   status: 'success',
-  //   data: {
-  //     tour,
-  //   },
-  // });
-});
+// if (id > tours.length) {
+//   return res.status(404).json({
+//     status: 'fail',
+//     message: 'invalid ID',
+//   });
+// }
+// const tour = tours.find((el) => el.id === id);
+// res.status(200).json({
+//   status: 'success',
+//   data: {
+//     tour,
+//   },
+// });
+// });
 exports.createTours = factory.createOne(Tour);
 // exports.createTours = catchAsync(async (req, res, next) => {
 //   const newTour = await Tour.create(req.body);

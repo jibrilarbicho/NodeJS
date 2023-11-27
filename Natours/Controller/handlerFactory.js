@@ -1,5 +1,6 @@
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
+const APIFeatures = require('./../utils/ApiFeatures');
 
 exports.deleteOne = (Model) =>
   catchAsync(async (req, res, next) => {
@@ -34,6 +35,48 @@ exports.createOne = (Model) =>
 
     res.status(201).json({
       status: 'sucess',
+      data: {
+        doc,
+      },
+    });
+  });
+exports.getOne = (Model, popOptions) =>
+  catchAsync(async (req, res, next) => {
+    // const doc = await Model.findById(req.params.id).populate('reviews');
+    let query = Model.findById(req.params.id);
+    if (popOptions) query = query.populate(popOptions);
+    const doc = await query;
+    const id = req.params.id * 1; //times is uesd to convert id to number
+    if (!doc) {
+      res.status(404).json({
+        status: 'fail',
+        message: 'no Document found with this ID',
+      });
+      return;
+    }
+    res.status(200).json({
+      status: 'sucess',
+      data: {
+        data: doc,
+      },
+    });
+  });
+exports.getAll = (Model) =>
+  catchAsync(async (req, res, next) => {
+    //To allow for nested GET reviews on Tour
+    let filter = {};
+    if (req.params.tourID) filter = { tour: req.params.tourID };
+    const features = new APIFeatures(Model.find(filter), req.query)
+      .filter()
+      .sort()
+      .limiting()
+      .pagination();
+    const doc = await features.query;
+    // console.log(req.params);
+    const id = req.params.id * 1; //times is uesd to convert id to number
+    res.status(200).json({
+      status: 'sucess',
+      resluts: doc.length,
       data: {
         doc,
       },

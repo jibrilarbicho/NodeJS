@@ -49,12 +49,13 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     },
   });
 });
-exports.getAllUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'this route is not defined',
-  });
-};
+exports.getAllUser = factory.getAll(User);
+// exports.getAllUser = (req, res) => {
+//   res.status(500).json({
+//     status: 'error',
+//     message: 'this route is not defined',
+//   });
+// };
 exports.createUsers = (req, res) => {
   res.status(500).json({
     status: 'error',
