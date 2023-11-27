@@ -61,12 +61,14 @@ exports.createUsers = (req, res) => {
     message: 'this route is not defined',
   });
 };
-exports.updateUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'this route is not defined',
-  });
-};
+//Do not update Passwords with this
+exports.updateUser = factory.updateOne(User);
+// exports.updateUser = (req, res) => {
+//   res.status(500).json({
+//     status: 'error',
+//     message: 'this route is not defined',
+//   });
+// };
 exports.deleteUser = factory.deleteOne(User);
 
 // exports.deleteUser = (req, res) => {

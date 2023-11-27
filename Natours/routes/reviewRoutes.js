@@ -8,7 +8,10 @@ reviewRoutes
   .post(
     authocontroller.protect,
     authocontroller.restrictTo('user'),
+    reviewController.setTourUserIds,
     reviewController.createReview
   );
 reviewRoutes.route('/:id').delete(reviewController.deleteReview);
+reviewRoutes.route('/:id').patch(reviewController.updateReview);
+
 module.exports = reviewRoutes;
