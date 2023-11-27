@@ -71,6 +71,7 @@ exports.getAll = (Model) =>
       .sort()
       .limiting()
       .pagination();
+    // const doc = await features.query.explain();
     const doc = await features.query;
     // console.log(req.params);
     const id = req.params.id * 1; //times is uesd to convert id to number

@@ -111,7 +111,8 @@ const tourSchema = new mongoose.Schema(
 //   this.guides = await Promise.all(guidesPromises);
 //   next();
 // });
-
+tourSchema.index({ price: 1, ratingsAverage: -1 });
+tourSchema.index({ slug: 1 });
 tourSchema.pre('save', function (next) {
   //this intrdouces the current document
   this.slugify = slugify(this.name, { lower: true });
