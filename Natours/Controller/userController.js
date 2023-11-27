@@ -10,15 +10,21 @@ const filterObj = (obj, ...allowedFields) => {
   });
   return newObj;
 };
-exports.getAllUsers = catchAsync(async (req, res) => {
-  const users = await User.find();
-  res.status(500).json({
-    status: 'sucess',
-    data: {
-      users,
-    },
-  });
-});
+exports.getAllUsers = factory.getAll(User);
+
+// exports.getAllUsers = catchAsync(async (req, res) => {
+//   const users = await User.find();
+//   res.status(500).json({
+//     status: 'sucess',
+//     data: {
+//       users,
+//     },
+//   });
+// });
+exports.getMe = (req, res, next) => {
+  req.params.id = req.user.id;
+  next();
+};
 exports.deleteMe = catchAsync(async (req, res, next) => {
   await User.findByIdAndUpdate(req.user.id, { active: false });
   res.status(204).json({
@@ -49,7 +55,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     },
   });
 });
-exports.getAllUser = factory.getAll(User);
+exports.getAllUser = factory.getOne(User);
 // exports.getAllUser = (req, res) => {
 //   res.status(500).json({
 //     status: 'error',

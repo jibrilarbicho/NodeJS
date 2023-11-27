@@ -11,8 +11,8 @@ class APIFeatures {
     console.log('Original:', queryStr);
     queryStr = queryStr.replace(/(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
     // console.log(JSON.parse(queryStr));
-
-    this.query.find(JSON.parse(queryStr));
+    this.query.find(JSON.parse(queryStr)); //the same as the bellow
+    // this.query = this.query.find(JSON.parse(queryStr));
     // console.log(this);
     return this;
   }

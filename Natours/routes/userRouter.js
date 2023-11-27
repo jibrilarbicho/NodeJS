@@ -12,6 +12,12 @@ userRouter.patch(
   authController.protect,
   authController.updatePassword
 );
+userRouter.get(
+  '/me',
+  authController.protect,
+  userController.getMe,
+  userController.getAllUser
+);
 userRouter.delete('/deleteMe', authController.protect, userController.deleteMe);
 userRouter.patch('/updateMe', authController.protect, userController.updateMe);
 userRouter
@@ -23,4 +29,5 @@ userRouter
   .get(userController.getAllUser)
   .patch(userController.updateUser)
   .delete(userController.deleteUser);
+
 module.exports = userRouter;
