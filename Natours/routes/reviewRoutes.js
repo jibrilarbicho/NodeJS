@@ -10,4 +10,5 @@ reviewRoutes
     authocontroller.restrictTo('user'),
     reviewController.createReview
   );
+reviewRoutes.route('/:id').delete(reviewController.deleteReview);
 module.exports = reviewRoutes;

@@ -1,6 +1,8 @@
 const catchAsync = require('./../utils/catchAsync');
 const User = require('./../Models/userModel');
 const AppError = require('./../utils/appError');
+const factory = require('./handlerFactory');
+
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
   Object.keys(obj).forEach((el) => {
@@ -65,13 +67,14 @@ exports.updateUser = (req, res) => {
     message: 'this route is not defined',
   });
 };
+exports.deleteUser = factory.deleteOne(User);
 
-exports.deleteUser = (req, res) => {
-  res.status(500).json({
-    status: 'error',
-    message: 'this route is not defined',
-  });
-};
+// exports.deleteUser = (req, res) => {
+//   res.status(500).json({
+//     status: 'error',
+//     message: 'this route is not defined',
+//   });
+// };
 // app.get('/api/v1/tours/:id', getTour);
 // app.patch('/api/v1/tours/:id', updateTour);
 // app.post('/api/v1/tours', createTour);
