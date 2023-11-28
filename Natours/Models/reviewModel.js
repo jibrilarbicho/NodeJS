@@ -32,6 +32,9 @@ const reviewSchema = new mongoose.Schema(
     to0bject: { virtuals: true },
   }
 );
+//to make one user create only one review
+reviewSchema.index({ tour: 1, user: 1 }, { unique: true });
+
 // reviewSchema.statics.calcAverageRatings = async function (tourID) {
 //   const stats = await this.aggregate([
 //     {
@@ -68,7 +71,7 @@ reviewSchema.statics.calcAverageRatings = async function (tourID) {
   ]);
 
   if (stats.length > 0) {
-    console.log(stats);
+    // console.log(stats);
     await Tour.findByIdAndUpdate(tourID, {
       ratingsQuantity: stats[0].nRating,
       ratingsAverage: stats[0].avgRating,
@@ -104,9 +107,9 @@ reviewSchema.pre(/^find/, function (next) {
 // });
 
 reviewSchema.pre(/^findOneAnd/, async function (next) {
-  console.log(this.getQuery);
+  // console.log(this.getQuery);
   this._currentQuery = await this.model.findOne(this.getQuery()); // Store the document in _currentQuery
-  console.log(this._currentQuery);
+  // console.log(this._currentQuery);
   next();
 });
 
@@ -114,7 +117,7 @@ reviewSchema.post(/^findOneAnd/, async function () {
   if (this._currentQuery) {
     const { tour, constructor } = this._currentQuery;
     await constructor.calcAverageRatings(tour);
-    console.log(this._currentQuery);
+    // console.log(this._currentQuery);
   }
 });
 

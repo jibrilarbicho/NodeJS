@@ -35,6 +35,7 @@ const tourSchema = new mongoose.Schema(
       default: 4.5,
       min: [1, 'A Tour must have 1 min ratingAverage'],
       max: [5, 'A tour must have max 5 ratingAverage'],
+      set: (val) => Math.round(val * 10) / 10, //this when there is new request always and update them
     },
     ratingsQuantity: {
       type: Number,
