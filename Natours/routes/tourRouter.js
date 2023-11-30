@@ -14,8 +14,11 @@ const tourRouter = express.Router();
 //     authoController.restrictTo('user'),
 //     reviewController.createReview
 //   );
-
 tourRouter.use('/:tourID/reviews', reviewRoutes);
+tourRouter
+  .route('/tours-within/:distance/center/:latlng/unit/:unit')
+  .get(tourController.getToursWithin);
+
 tourRouter.route('/tour-stats').get(tourController.getTourstats);
 tourRouter
   .route('/monthly-plan/:year')
