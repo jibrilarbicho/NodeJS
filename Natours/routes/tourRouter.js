@@ -27,7 +27,9 @@ tourRouter
     authoController.restrictTo('admin', 'lead-guide', 'guide'),
     tourController.getMonthlyPlan
   );
-
+tourRouter
+  .route('/distances/:latlng/unit/:unit')
+  .get(tourController.getDistances);
 tourRouter
   .route('/top-5-cheap')
   .get(tourController.aliastoptours, tourController.getTours);

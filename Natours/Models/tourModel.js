@@ -115,6 +115,7 @@ const tourSchema = new mongoose.Schema(
 tourSchema.index({ price: 1, ratingsAverage: -1 });
 tourSchema.index({ slug: 1 });
 tourSchema.index({ startLocation: '2dsphere' });
+// tourSchema.index({ 'startLocation.coordinates': '2dsphere' });
 tourSchema.pre('save', function (next) {
   //this intrdouces the current document
   this.slugify = slugify(this.name, { lower: true });
