@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const helmet = require('helmet');
@@ -11,6 +12,8 @@ const tourRouter = require('./routes/tourRouter');
 const userRouter = require('./routes/userRouter');
 const AppError = require('./utils/appError');
 const reviewRoutes = require('./routes/reviewRoutes');
+// app.set('view engine', 'pug');
+// app.set('views', path.join(__dirname, 'views'));
 app.use(helmet());
 if (process.env.NODE_ENV === 'developement') app.use(morgan('dev'));
 ``;
