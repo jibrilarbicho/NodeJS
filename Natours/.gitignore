@@ -1,2 +1,5 @@
-node_modules/*/lib/.local-data/*/chrome-linux/chrome
+
+
 .env
+node_modules
+node_modules/*/lib/.local-data/*/chrome-linux/chrome
