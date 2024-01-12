@@ -30,6 +30,7 @@ userRouter.patch(
   '/updateMe',
   userController.uploadUserPhoto,
   // authController.protect,
+  userController.resizePhoto,
   userController.updateMe
 );
 userRouter.use(authController.restrictTo('admin'));
