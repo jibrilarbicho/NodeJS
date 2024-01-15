@@ -54,6 +54,8 @@ tourRouter
   .patch(
     authoController.protect,
     authoController.restrictTo('admin', 'lead-guide'),
+    tourController.uploadTourImages,
+    tourController.resizTours,
     tourController.updateTour
   );
 

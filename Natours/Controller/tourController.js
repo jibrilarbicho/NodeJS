@@ -4,6 +4,29 @@ const APIFeatures = require('./../utils/ApiFeatures');
 const catchAsync = require('./../utils/catchAsync');
 const cathAsync = require('./../utils/catchAsync');
 const factory = require('./handlerFactory');
+const multer = require('multer');
+const sharp = require('sharp');
+const multerStorage = multer.memoryStorage();
+const multerFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')) {
+    cb(null, true);
+  } else {
+    cb(new AppError('not an image Please upload only image', 400), false);
+  }
+};
+const upload = multer({ storage: multerStorage, fileFilter: multerFilter });
+exports.uploadTourImages = upload.fields([
+  { name: 'imageCover', maxCount: 1 },
+  {
+    name: 'images',
+    maxCount: 3,
+  },
+]);
+exports.resizTours = (req, res, next) => {
+  console.log(req.files);
+  next();
+};
+
 exports.aliastoptours = (req, res, next) => {
   req.query.limit = '5';
   req.query.sort = '-ratingsAverage ,price';
